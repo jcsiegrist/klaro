@@ -204,6 +204,7 @@ export default class ConsentManager {
                     newElement.dataset[key] = dataset[key]
                 }
                 newElement.type = 'text/plain'
+                newElement.nonce = element.nonce
                 newElement.innerText = element.innerText
                 newElement.text = element.text
                 newElement.class = element.class
