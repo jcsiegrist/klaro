@@ -29,7 +29,8 @@ export default class ConsentModal extends React.Component {
         let declineButton
 
         if (!config.hideDeclineAll && ! manager.confirmed)
-            declineButton = <button disabled={confirming} className="cm-btn cm-btn-decline cm-btn-right cm-btn-sm cm-btn-danger cn-decline" type="button" onClick={declineAndHide}>{t(['decline'])}</button>
+            declineButton = <button disabled={confirming} className="cm-btn cm-btn-decline 
+            cm-btn-right cm-btn-sm cm-btn-danger cn-decline" type="button" onClick={declineAndHide}>{t(['decline'])}</button>
         let acceptAllButton
         const acceptButton =
             <button disabled={confirming} className="cm-btn cm-btn-success cm-btn-info cm-btn-accept" type="button" onClick={saveAndHide}>{t([manager.confirmed ? 'save' : 'acceptSelected'])}</button>

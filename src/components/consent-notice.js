@@ -21,7 +21,7 @@ export default class ConsentNotice extends React.Component {
             this.setState({confirming: false})
             this.props.manager.saveAndApplyConsents()
             this.props.hide()
-        }
+    }
         if (setChangedAll && !confirmed && (modal || this.props.config.mustConsent)){
             this.setState({confirming: true})
             setTimeout(saveAndHide, 1000)
