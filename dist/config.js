@@ -39,10 +39,18 @@ var klaroConfig = {
 
     // Show "accept all" to accept all apps instead of "ok" that only accepts
     // required and "default: true" apps
-    acceptAll: false,
+    acceptAll: true,
 
     // replace "decline" with cookie manager modal
     hideDeclineAll: false,
+
+    // An optional callback function that will be called each time
+    // the consent state for the app changes (true=consented). Passes
+    // the `app` config as the second parameter as well.
+    saveCallback: function(savedConsents) {
+        // This is an example callback function.
+        console.log('User saved consents:', savedConsents);
+    },
 
     // You can define the UI language directly here. If undefined, Klaro will
     // use the value given in the global "lang" variable. If that does
@@ -253,7 +261,7 @@ var klaroConfig = {
         {
             name: 'inlineTracker',
             title: 'Inline Tracker',
-            purposes: ['analytics'],
+        purposes: ['analytics'],
             cookies: ['inline-tracker'],
             optOut: false,
         },
