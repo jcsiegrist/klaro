@@ -148,12 +148,15 @@ export default class ConsentManager {
         this.applyConsents()
     }
 
-    saveConsents(){
+    saveConsents() {
         const v = encodeURIComponent(JSON.stringify(this.consents))
-        this.store.set(v);
+        this.store.set(v)
         this.confirmed = true
         this.changed = false
         this.savedConsents = {...this.consents}
+        if (typeof this.config.saveCallback === 'function') {
+            this.config.saveCallback(this.savedConsents)
+        }
     }
 
     applyConsents(){

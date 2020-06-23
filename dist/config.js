@@ -45,8 +45,7 @@ var klaroConfig = {
     hideDeclineAll: false,
 
     // An optional callback function that will be called each time
-    // the consent state for the app changes (true=consented). Passes
-    // the `app` config as the second parameter as well.
+    // the consents are saved.
     saveCallback: function(savedConsents) {
         // This is an example callback function.
         console.log('User saved consents:', savedConsents);
