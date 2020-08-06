@@ -11,6 +11,10 @@ consentNotice:
   description: >
     Wir speichern und verarbeiten Ihre personenbezogenen Informationen für folgende Zwecke: {purposes}.
   learnMore: Mehr erfahren
+  privacyPolicy:
+    name: Datenschutzerklärung
+  imprint:
+    name: Impressum
 ok: OK
 save: Speichern
 decline: Ablehnen
@@ -20,7 +24,7 @@ acceptAll: Allen zustimmen
 app:
   disableAll:
     title: Alle Anwendungen aktivieren/deaktivieren
-    description: Nutzen Sie diesen Schalter um alle Apps zu aktivieren/deaktivieren.
+    description: Nutzen Sie diesen Schalter, um alle Apps zu aktivieren/deaktivieren.
   optOut:
     title: (Opt-Out)
     description: Diese Anwendung wird standardmäßig geladen (Sie können diese aber deaktivieren)

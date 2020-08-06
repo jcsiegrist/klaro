@@ -25,7 +25,7 @@ Current languages: Catalan, Croatian, Dutch, English, Finnish, French, German, G
 
 ## Getting started
 
-To use the widget on your website, simply download [klaro.js](https://klaro.kiprotect.com/klaro.js) as well as the example config [config.js](https://klaro.kiprotect.com/config.js). Follow the instructions below to adapt the config to your needs and then include the two files in your website like this:
+To use the widget on your website, simply download [klaro.js](https://klaro.kiprotect.com/klaro.js) as well as the example config [config.js](https://klaro.kiprotect.com/config.js). You can also download compiled JS files from the `dist` folder of this repository. **Do not use the `klaro.js` file from the `src` folder, it will not work in the browser as it's an  ES6 module and needs to be transpiled first (for most browsers at least).** Follow the instructions below to adapt the config to your needs and then include the two files in your website like this:
 ```html
 <script defer type="text/javascript" src="config.js"></script>
 <script defer type="text/javascript" src="klaro.js"></script>
@@ -67,6 +67,34 @@ The same method also works for images, stylesheets and other elements with a `sr
 
 The consent manager is configured using a config dictionary, which you typically define in a separate JS file. To learn more, simply read the [annotated example config](dist/config.js), which contains descriptions of all valid config options and parameters.
 
+## Using Klaro via NPM
+
+Klaro is also available as a Node.js module via npm:
+
+    npm install klaro
+
+The npm distribution includes fully-fledged Klaro with CSS as well as the version without CSS (the CSS
+bundle is also included). In addition, it contains the consent management framework without the UI classes,
+which is handy in case you want to use your own UI classes:
+
+```js
+// import Klaro with CSS
+import * as klaro from 'klaro'
+
+// import Klaro without CSS
+import * as klaro from 'klaro/dist/klaro-no-css'
+
+// import the accompanying CSS (requires style-loader)
+import 'klaro/dist/klaro.css'
+
+// import only the consent manager (no UI)
+import 'klaro/dist/consent-manager'
+```
+
+This enables you to seamlessly integrate Klaro with your own JS projects, regardless if you use React, Vue,
+Angular, Mithril, Svelte or any other JS framework. Have a look at [our webpack example](examples/klaro-and-webpack)
+to see a complete example.
+
 ## Building Klaro from scratch
 
 If you want to customize Klaro or extend it, you can build it from scratch using the following commands:
@@ -75,6 +103,25 @@ npm install
 npm run-script make-dev #will run a development server
 npm run-script make #will build the production version
 ```
+
+If you have an environment where `make` is available, you can also run
+
+    make build 
+
+## Maintainers
+
+To publish a new version of Klaro to NPM, simply run
+
+    make publish
+
+To generate a new tagged release, simply run
+
+    make release [RT=patch|minor|major]
+
+If no argument is given, a 'patch' release will be created. The release mechanism will not run if
+the working directory isn't clean. If it is, a Python script will increase the version number in
+the `package.json` file, rebuild the `dist` files, create a new commit and tag it with the version.
+
 ## Contributing
 
 Want to contribute? We'd love that!

@@ -1,5 +1,8 @@
 /* globals module, require, VERSION */
 
+if (window.btoa === undefined)
+    window.btoa = false
+
 import 'scss/klaro.scss'
 
 // When webpack's hot loading is enabled, enable Preact's support for the
@@ -11,20 +14,19 @@ import App from 'components/app.js'
 import ConsentManager from 'consent-manager'
 import {render} from 'react-dom'
 import translations from 'translations'
+import {currentScript} from 'utils/compat'
 import {convertToMap, update} from 'utils/maps'
 import {t, language} from 'utils/i18n'
-import currentExecutingScript from 'current-executing-script';
 
-const script = document.currentScript || currentExecutingScript();
-const originalOnLoad = window.onload
+const script = currentScript("klaro");
 const convertedTranslations = convertToMap(translations)
-const configName = script.dataset.config || "klaroConfig"
-const noAutoLoad = script.dataset.noAutoLoad === "true"
-const stylePrefix = script.dataset.stylePrefix || "klaro"
+const configName = script.getAttribute('data-config') || "klaroConfig"
+const noAutoLoad = script.getAttribute('data-no-auto-load') === "true"
+const stylePrefix = script.getAttribute('data-style-prefix') || "klaro"
 const config = window[configName]
 const managers = {}
 
-window.onload = initialize
+window.addEventListener('load', initialize)
 
 if (module.hot) {
     if (!noAutoLoad)
@@ -47,10 +49,11 @@ function getElement(config){
     return element
 }
 
-function getTranslations(config){
+export function getTranslations(conf){
+    conf = conf || config
     const trans = new Map([])
     update(trans, convertedTranslations)
-    update(trans, convertToMap(config.translations || {}))
+    update(trans, convertToMap(conf.translations || {}))
     return trans
 }
 
@@ -67,7 +70,7 @@ export function renderKlaro(config, show){
     const trans = getTranslations(config)
     const manager = getManager(config)
     const lang = config.lang || language()
-    const tt = (...args) => {return t(trans, lang, ...args)}
+    const tt = (...args) => t(trans, lang, ...args)
     const app = render(<App t={tt}
         stylePrefix={stylePrefix}
         manager={manager}
@@ -76,17 +79,19 @@ export function renderKlaro(config, show){
     return app
 }
 
-export function initialize(e){
+export function initialize(){
     if (!noAutoLoad)
         renderKlaro(config)
-    if (originalOnLoad !== null){
-        originalOnLoad(e)
-    }
+}
+
+export function resetManagers(){
+    for(const key in Object.keys(managers))
+        managers.delete(key)
 }
 
 export function getManager(conf){
     conf = conf || config
-    const name = getElementID(conf)
+    const name = conf.cookieName || 'default'
     if (managers[name] === undefined)
         managers[name] = new ConsentManager(conf)
     return managers[name]

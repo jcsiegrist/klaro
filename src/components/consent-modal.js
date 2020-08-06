@@ -28,6 +28,9 @@ export default class ConsentModal extends React.Component {
         }
         let declineButton
 
+
+        const extraHTML = t(['!', 'consentModal', 'extraHTML'])
+
         if (!config.hideDeclineAll && ! manager.confirmed)
             declineButton = <button disabled={confirming} className="cm-btn cm-btn-decline 
             cm-btn-right cm-btn-sm cm-btn-danger cn-decline" type="button" onClick={declineAndHide}>{t(['decline'])}</button>
@@ -42,7 +45,11 @@ export default class ConsentModal extends React.Component {
             config.privacyPolicy.default ||
             config.privacyPolicy
 
-        const ppLink = <a onClick={hide} href={ppUrl}>{t(['consentModal','privacyPolicy','name'])}</a>
+        let extraHTMLElement
+        if (extraHTML !== undefined)
+            extraHTMLElement = <div dangerouslySetInnerHTML={{__html: extraHTML}} />
+
+        const ppLink = <a onClick={hide} href={ppUrl} target="_blank" rel="noopener noreferrer">{t(['consentModal','privacyPolicy','name'])}</a>
         return <div className="cookie-modal">
             <div className="cm-bg" onClick={hide}/>
             <div className="cm-modal">
@@ -53,6 +60,7 @@ export default class ConsentModal extends React.Component {
                         {t(['consentModal','description'])} &nbsp;
                         {t(['consentModal','privacyPolicy','text'], {privacyPolicy : ppLink})}
                     </p>
+                    {extraHTMLElement}
                 </div>
                 <div className="cm-body">
                     <Apps t={t} config={config} manager={manager} />

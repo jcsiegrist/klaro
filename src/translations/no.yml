@@ -11,9 +11,13 @@ consentNotice:
   description: >
     Vi samler inn og prosesserer din personlige informasjon av følgende årsaker: {purposes}.
   learnMore: Lær mer
+  privacyPolicy:
+    name: personvernerklæring
 ok: OK
 save: Opslaan
 decline: Avslå
+acceptAll: Godtar alle
+acceptSelected: Godtar valgt
 app:
   disableAll:
     title: Bytt alle apper

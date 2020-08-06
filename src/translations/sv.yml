@@ -11,9 +11,13 @@ consentNotice:
   description: >
     Vi samlar och bearbetar din personliga data i följande syften: {purposes}.
   learnMore: Läs mer
+  privacyPolicy:
+    name: Integritetspolicy
 ok: OK
 save: Spara
 decline: Avböj
+acceptAll: Acceptera alla
+acceptSelected: Acceptera markerat
 close: Stäng
 app:
   disableAll:

@@ -44,12 +44,8 @@ var klaroConfig = {
     // replace "decline" with cookie manager modal
     hideDeclineAll: false,
 
-    // An optional callback function that will be called each time
-    // the consents are saved.
-    saveCallback: function(savedConsents) {
-        // This is an example callback function.
-        console.log('User saved consents:', savedConsents);
-    },
+    // hide "learnMore" link
+    hideLearnMore: false,
 
     // You can define the UI language directly here. If undefined, Klaro will
     // use the value given in the global "lang" variable. If that does
@@ -68,6 +64,9 @@ var klaroConfig = {
         // If you erase the "consentModal" translations, Klaro will use the
         // bundled translations.
         de: {
+            consentNotice: {
+                extraHTML: "<p>test</p>",
+            },
             consentModal: {
                 description:
                     'Hier können Sie einsehen und anpassen, welche Information wir über Sie sammeln. Einträge die als "Beispiel" gekennzeichnet sind dienen lediglich zu Demonstrationszwecken und werden nicht wirklich verwendet.',
@@ -80,6 +79,7 @@ var klaroConfig = {
             },
             adsense: {
                 description: 'Anzeigen von Werbeanzeigen (Beispiel)',
+                title: 'Google AdSense Werbezeugs',
             },
             matomo: {
                 description: 'Sammeln von Besucherstatistiken',
@@ -110,7 +110,13 @@ var klaroConfig = {
             },
         },
         en: {
+            consentNotice: {
+                // uncomment and edit this to add extra HTML to the consent notice below the main text
+                // extraHTML: "<p>Please look at our <a href=\"#imprint\">imprint</a> for further information.</p>",
+            },
             consentModal: {
+                // uncomment and edit this to add extra HTML to the consent modal below the main text
+                // extraHTML: "<p>This is additional HTML that can be freely defined.</p>",
                 description:
                     'Here you can see and customize the information that we collect about you. Entries marked as "Example" are just for demonstration purposes and are not really used on this website.',
             },
@@ -122,6 +128,7 @@ var klaroConfig = {
             },
             adsense: {
                 description: 'Displaying of advertisements (just an example)',
+                title: 'Google Adsense Advertisement',
             },
             matomo: {
                 description: 'Collecting of visitor statistics',
@@ -227,6 +234,9 @@ var klaroConfig = {
                 // is not the current domain. If you do not set these values
                 // properly, the cookie can't be deleted by Klaro
                 // (there is no way to access the path or domain of a cookie in JS)
+                // Notice that it is not possible to delete cookies that were set
+                // on a third-party domain! See the note at mdn:
+                // https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#new-cookie_domain
                 [/^_pk_.*$/, '/', 'klaro.kiprotect.com'], //for the production version
                 [/^_pk_.*$/, '/', 'localhost'], //for the local version
                 'piwik_ignore',
@@ -260,7 +270,7 @@ var klaroConfig = {
         {
             name: 'inlineTracker',
             title: 'Inline Tracker',
-        purposes: ['analytics'],
+            purposes: ['analytics'],
             cookies: ['inline-tracker'],
             optOut: false,
         },
@@ -283,7 +293,9 @@ var klaroConfig = {
         },
         {
             name: 'adsense',
-            title: 'Google AdSense',
+            // if you omit the title here Klaro will try to look it up in the
+            // translations
+            //title: 'Google AdSense',
             purposes: ['advertising'],
         },
         {

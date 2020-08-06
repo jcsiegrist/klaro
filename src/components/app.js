@@ -29,7 +29,7 @@ export default class App extends React.Component {
         }
         return (
             <div className={stylePrefix}>
-                <ConsentNotice t={t} show={show} hide={hide} config={config} manager={manager} />
+                <ConsentNotice key={"app-"+this.props.show} t={t} show={show} hide={hide} config={config} manager={manager} />
             </div>
         )
     }

@@ -11,10 +11,16 @@ consentNotice:
   description: >
     Nous collectons et traitons vos informations personnelles dans le but suivant : {purposes}.
   learnMore: En savoir plus
+  privacyPolicy:
+    name: politique de confidentialité
+  imprint:
+    name: Imprimer
 ok: OK
 save: Sauvegarder
 decline: Refuser
 close: Fermer
+acceptAll: Tout accepter
+acceptSelected: Accepter la sélection
 app:
   disableAll:
     title: Changer toutes les options

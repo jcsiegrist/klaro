@@ -1,15 +1,21 @@
 import React from 'react'
 import ConsentModal from './consent-modal'
 import {getPurposes} from 'utils/config'
+import {language} from 'utils/i18n'
 
 export default class ConsentNotice extends React.Component {
 
     constructor(props){
         super(props)
         this.state = {
-            modal: false,
+            modal: props.modal,
             confirming: false
         }
+    }
+
+    componentDidUpdate(prevProps){
+        if (prevProps.modal !== this.props.modal)
+            this.setState({modal: this.props.modal})
     }
 
     executeButtonClicked = (setChangedAll, changedAllValue) => {
@@ -48,7 +54,11 @@ export default class ConsentNotice extends React.Component {
 
         const purposes = getPurposes(config)
         const purposesText = purposes.map((purpose) => t(['purposes', purpose])).join(", ")
-
+        const extraHTML = t(['!', 'consentNotice', 'extraHTML'])
+        const lang = config.lang || language()
+        const ppUrl = (config.privacyPolicy && config.privacyPolicy[lang]) ||
+            config.privacyPolicy.default ||
+            config.privacyPolicy
         let changesText
 
         const showModal = (e) => {
@@ -79,21 +89,31 @@ export default class ConsentNotice extends React.Component {
             :
             <button className="cm-btn cm-btn-sm cm-btn-success" type="button" onClick={this.saveAndHide}>{t(['ok'])}</button>
 
-        const noticeIsVisible =
-            !config.mustConsent && !manager.confirmed && !config.noNotice
+        const learnMoreLink = config.hideLearnMore ?
+            ''
+            :
+            <a className="cm-link cm-learn-more" href="#" onClick={showModal}>{t(['consentNotice', 'learnMore'])}...</a>
+
+        const ppLink = <a onClick={hideModal} href={ppUrl}>{t(['consentNotice','privacyPolicy','name'])}</a>
+
+        let extraHTMLElement
+
+        if (extraHTML !== undefined)
+            extraHTMLElement = <div dangerouslySetInnerHTML={{__html: extraHTML}} />
 
         if (modal || manager.confirmed || (!manager.confirmed && config.mustConsent))
             return <ConsentModal t={t} confirming={confirming} config={config} hide={hideModal} declineAndHide={this.declineAndHide} saveAndHide={this.saveAndHide} acceptAndHide={this.acceptAndHide} manager={manager} />
-        return <div className={`cookie-notice ${!noticeIsVisible ? 'cookie-notice-hidden' : ''}`}>
+        return <div className="cookie-notice">
             <div className="cn-body">
                 <p>
-                    {t(['consentNotice', 'description'], {purposes: <strong>{purposesText}</strong>})}
+                    {t(['consentNotice', 'description'], {purposes: <strong>{purposesText}</strong>, privacyPolicy: ppLink })}
                 </p>
                 {changesText}
+                {extraHTMLElement}
                 <p className="cn-ok">
                     {declineButton}
                     {acceptButton}
-                    <a className="cm-link cm-learn-more" href="#" onClick={showModal}>{t(['consentNotice', 'learnMore'])}...</a>
+                    {learnMoreLink}
                 </p>
             </div>
         </div>

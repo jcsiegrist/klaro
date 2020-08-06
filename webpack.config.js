@@ -4,9 +4,12 @@ const path = require('path');
 const BUILD_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
 const APP_ENV = process.env.APP_ENV || 'dev';
+const ANALYZE_BUNDLE = process.env.ANALYZE_BUNDLE !== undefined;
 const SEPARATE_CSS = process.env.SEPARATE_CSS !== undefined;
 const NO_MINIFY_CSS = process.env.NO_MINIFY_CSS !== undefined;
 const APP_DEV_MODE = APP_ENV === 'dev' && process.env.APP_DEV_MODE;
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 function withEnvSourcemap(loader) {
   return APP_ENV === 'dev' ? loader + '?sourceMap' : loader;
@@ -45,22 +48,30 @@ let config = {
       }
     ]
   },
-  entry: [
-    SRC_DIR + '/klaro.js'
-  ],
+  entry: {
+    klaro: SRC_DIR + '/klaro.js',
+    'consent-manager': SRC_DIR + '/consent-manager.js'
+  },
   output: {
     path: BUILD_DIR,
-    filename: 'klaro.js',
-    library: 'klaro',
+    filename: '[name].js',
+    library: '[name]',
     libraryTarget: 'umd',
     publicPath: ''
   },
-  plugins: []
+  plugins: [
+  ]
 };
+
+if (ANALYZE_BUNDLE){
+  config.plugins.push(new BundleAnalyzerPlugin());
+}
 
 if (SEPARATE_CSS){
   config.output.filename = 'klaro-no-css.js'
   const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+  // no CSS does not apply to the consent manager
+  delete config.entry['consent-manager']
   config.module.rules.push({
       test: /\.(sa|sc|c)ss$/,
       use: [
